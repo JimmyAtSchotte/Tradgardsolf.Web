@@ -17,10 +17,12 @@
 </template>
 
 <script>
+    import modules from '@/application/modules';
   export default {
+      name: 'CreatePlayer',
       methods: {
           gotoLogin: function () {
-              this.$router.push({ name: 'login' });
+              this.$router.push({ name: modules.LoginModule.name });
           }
       }
   }

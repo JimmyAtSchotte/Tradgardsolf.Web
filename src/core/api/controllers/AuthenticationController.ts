@@ -10,7 +10,7 @@ export default class AuthenticationController {
     }
 
     public async AuthenticateWithCredentials(model: CredentialsModel): Promise<AuthorizedPlayer> {
-       return await this.api.postAsync<AuthorizedPlayer>('api/authentication/AuthenticateWithCredentials', model);
+       return await this.api.postAsync<AuthorizedPlayer, CredentialsModel>('api/authentication/AuthenticateWithCredentials', model);
     }
 
     public SignOut(): void {

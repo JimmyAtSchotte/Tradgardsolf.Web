@@ -1,6 +1,6 @@
-export default interface IApi{
-    postAsync<T>(url: string, data: any): Promise<T>;
-    post(url: string, data: any): void;
-    getAsync<T>(url: string, data?: any): Promise<T>;
+export default interface IApi {
+    postAsync<TResult, TModel>(url: string, data: TModel): Promise<TResult>;
+    post<TModel>(url: string, data: TModel): void;
+    getAsync<TResult, TModel = {}>(url: string, data?: TModel): Promise<TResult>;
     get(url: string): void;
 }

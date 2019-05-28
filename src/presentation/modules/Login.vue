@@ -21,8 +21,11 @@
    import  Vue from 'vue';
    import { mapActions, mapGetters } from 'vuex'
    import CredentialsModel from '@/core/api/models/CredentialsModel';
+   import modules from '@/application/modules';
 
-  export default {        
+
+  export default {      
+      name: 'Login',  
     data: () => ({
         credentialsModel: new CredentialsModel()                   
     }),
@@ -32,7 +35,7 @@
     methods: {
         ...mapActions(['authenticateWithCredentials']),
         gotoCreatePlayer: function (event) {
-            this.$router.push({ name: 'createPlayer' });
+            this.$router.push({ name: modules.CreatePlayerModule.name });
         },
         login: async function(event) {
             await this.authenticateWithCredentials(this.credentialsModel);
@@ -41,7 +44,7 @@
     watch: {
         isAuthorized: function (val) {
             if(val)
-                this.$router.push({ name: 'default' });
+                this.$router.push({ name: modules.CourseListModule.name });
         }
     }
 }

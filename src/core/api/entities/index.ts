@@ -6,4 +6,4 @@ export default {
     Course,
     AuthorizedPlayer,
     Player,
-}
+};

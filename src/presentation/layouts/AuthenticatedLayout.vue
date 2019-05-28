@@ -6,7 +6,7 @@
       app
     >
       <v-list dense>
-        <v-list-tile @click="onLogout">
+        <v-list-tile @click="signOut">
           <v-list-tile-action>
             <v-icon>logout</v-icon>
           </v-list-tile-action>
@@ -31,7 +31,10 @@
 
 <script lang="ts">
    import  Vue from 'vue';
-   import { mapActions, mapGetters } from 'vuex'
+   import { mapActions, mapGetters } from 'vuex';
+   import modules from '@/application/modules';
+
+
   export default Vue.extend({
     data: () => ({
       drawer: null
@@ -40,22 +43,16 @@
         ...mapGetters(['isAuthorized']),        
     },
     methods: {
-      ...mapActions(['signOut']),
-      onLogout: function(): void{
-        this.signOut();           
-      }
+      ...mapActions(['signOut'])     
     },    
     created() {
-      console.log('created isAuthorized', this.isAuthorized);
-
       if(!this.isAuthorized)
-        this.$router.push({ name: 'login' });
+        this.$router.push({ name: modules.LoginModule.name });
     },
     watch: {
         isAuthorized: function (val) {
-          console.log('watch isAuthorized', val);
             if(!val)
-                this.$router.push({ name: 'login' });
+                this.$router.push({ name: modules.LoginModule.name });
         }
     }
   });

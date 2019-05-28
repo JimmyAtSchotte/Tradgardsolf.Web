@@ -1,13 +1,13 @@
 import Vue from 'vue';
-import Vuex, {ActionContext} from 'vuex';
+import Vuex, { ActionContext } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import AuthorizedPlayer from '@/core/api/entities/AuthorizedPlayer';
 import Course from '@/core/api/entities/Course';
 import CourseController from '@/core/api/controllers/CourseController';
 import AuthenticationController from '@/core/api/controllers/AuthenticationController';
 import CredentialsModel from '@/core/api/models/CredentialsModel';
-import Api from './Api';
-import RootState from '@/store/RootState';
+import Api from '@/application/Api';
+import RootState from '@/application/store/RootState';
 
 Vue.use(Vuex);
 
@@ -16,38 +16,37 @@ const courseController = new CourseController(api);
 const authenticationController = new AuthenticationController(api);
 
 export default new Vuex.Store({
-   strict: process.env.NODE_ENV !== 'production',
-   plugins: [createPersistedState({
-     paths: [
-         'authorizedPlayer',
-     ],
+  strict: process.env.NODE_ENV !== 'production',
+  plugins: [createPersistedState({
+    paths: [
+      'authorizedPlayer',
+    ],
   })],
   state: new RootState(),
   mutations: {
-    setAuthorizedPlayer(state, authorizedPlayer: AuthorizedPlayer | undefined) {
-      Vue.set(state, 'authorizedPlayer', authorizedPlayer);
+    setAuthorizedPlayer(state, authorizedPlayer: AuthorizedPlayer) {
+      state.authorizedPlayer = authorizedPlayer;
     },
     setHasPlayedOnCourses(state, courses: Course[]) {
-      Vue.set(state, 'hasPlayedOnCourses', courses);
+      state.hasPlayedOnCourses = courses;
     },
     setHasNotPlayedOnCourses(state, courses: Course[]) {
-      Vue.set(state, 'hasNotPlayedOnCourses', courses);
+      state.hasNotPlayedOnCourses = courses;
     },
     resetState(state) {
       Object.assign(state, new RootState());
+      state.authorizedPlayer = null;
     },
   },
   actions: {
-    async authenticateWithCredentials(context: ActionContext<RootState, RootState>, 
-                                      credentialsModel: CredentialsModel) {
-        await authenticationController.AuthenticateWithCredentials(credentialsModel).then((model) => {
-          context.commit('setAuthorizedPlayer', model);
-        });
+    async authenticateWithCredentials(context: ActionContext<RootState, RootState>, credentialsModel: CredentialsModel) {
+      await authenticationController.AuthenticateWithCredentials(credentialsModel).then((model) => {
+        context.commit('setAuthorizedPlayer', model);
+      });
     },
-    signOut(context: ActionContext<RootState, RootState>, credentialsModel: CredentialsModel) {
-        context.commit('resetState');
-        context.commit('setAuthorizedPlayer', undefined);
-        authenticationController.SignOut();
+    signOut(context: ActionContext<RootState, RootState>) {
+      context.commit('resetState');
+      authenticationController.SignOut();
     },
     setAuthorizedPlayer(context: ActionContext<RootState, RootState>, authorizedPlayer: AuthorizedPlayer | undefined) {
       context.commit('setAuthorizedPlayer', authorizedPlayer);
@@ -60,17 +59,16 @@ export default new Vuex.Store({
     async setHasNotPlayedOnCourses(context: ActionContext<RootState, RootState>) {
       await courseController.GetHasNotPlayedOnCourses().then((model) => {
         context.commit('setHasNotPlayedOnCourses', model);
-      }, (reson: any) => context.dispatch('rejectedApiCall', { context, reson }));
+      });
     },
     rejectedApiCall(context: any, error: any) {
-      if(error.reson.response.status === 401) {
-          context.commit('resetState');
-          context.commit('setAuthorizedPlayer', undefined);
+      if (error.reson.response.status === 401) {
+        context.commit('resetState');
       }
     },
   },
   getters: {
-    isAuthorized: (state) => state.authorizedPlayer !== undefined,
+    isAuthorized: (state) => state.authorizedPlayer !== null,
     authorizedPlayer: (state) => state.authorizedPlayer,
     hasPlayedOnCourses: (state) => state.hasPlayedOnCourses,
     hasNotPlayedOnCourses: (state) => state.hasNotPlayedOnCourses,

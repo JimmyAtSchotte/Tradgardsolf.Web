@@ -1,10 +1,11 @@
 import '@babel/polyfill';
 import Vue from 'vue';
 import './plugins/vuetify';
-import App from './App.vue';
-import router from './router';
-import store from './store';
-import './registerServiceWorker';
+import App from '@/presentation/layouts/App.vue';
+import router from '@/application/router';
+import store from '@/application/store/';
+import '@/application/registerServiceWorker';
+import modules from '@/application/modules';
 
 Vue.config.productionTip = false;
 
@@ -13,12 +14,12 @@ router.beforeEach((to, from, next) => {
   const allowAnonymous = !!to.meta.allowAnonymous;
 
   if (!isAuthorized && !allowAnonymous) {
-    next('login');
+    next({ name: modules.LoginModule.name });
     return;
   }
 
   if (isAuthorized && allowAnonymous) {
-    next({ name: 'default' });
+    next({ name: modules.CourseListModule.name });
     return;
   }
 

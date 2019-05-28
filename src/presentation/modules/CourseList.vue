@@ -10,7 +10,7 @@
     import  Vue from 'vue';
     import { mapActions, mapGetters } from 'vuex'
 
-    import CourseCard from "@/components/CourseCard.vue";
+    import CourseCard from "@/presentation/components/CourseCard.vue";
 
   export default Vue.extend({
      components: {
