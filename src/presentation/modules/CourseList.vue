@@ -13,11 +13,12 @@
     import CourseCard from "@/presentation/components/CourseCard.vue";
 
   export default Vue.extend({
+     name: 'CourseList',
      components: {
         CourseCard
      },
      computed: {
-         ...mapGetters(['hasPlayedOnCourses','hasNotPlayedOnCourses']),        
+         ...mapGetters(['hasPlayedOnCourses','hasNotPlayedOnCourses']),                 
      },
      methods: {
         ...mapActions(['setHasPlayedOnCourses', 'setHasNotPlayedOnCourses']),        

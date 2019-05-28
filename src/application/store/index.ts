@@ -6,7 +6,7 @@ import Course from '@/core/api/entities/Course';
 import CourseController from '@/core/api/controllers/CourseController';
 import AuthenticationController from '@/core/api/controllers/AuthenticationController';
 import CredentialsModel from '@/core/api/models/CredentialsModel';
-import Api from '@/application/Api';
+import Api from '@/application/api';
 import RootState from '@/application/store/RootState';
 
 Vue.use(Vuex);
@@ -68,9 +68,17 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    isAuthorized: (state) => state.authorizedPlayer !== null,
-    authorizedPlayer: (state) => state.authorizedPlayer,
-    hasPlayedOnCourses: (state) => state.hasPlayedOnCourses,
-    hasNotPlayedOnCourses: (state) => state.hasNotPlayedOnCourses,
+    isAuthorized(state): boolean {
+      return state.authorizedPlayer !== null;
+    },
+    authorizedPlayer(state): AuthorizedPlayer {
+      return state.authorizedPlayer;
+    },
+    hasPlayedOnCourses(state): Course[] {
+      return state.hasPlayedOnCourses;
+    },
+    hasNotPlayedOnCourses(state): Course[] {
+      return state.hasNotPlayedOnCourses;
+    },
   },
 });
