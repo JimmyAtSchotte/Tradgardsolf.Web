@@ -1,1 +1,0 @@
-import CourseController from './CourseController';

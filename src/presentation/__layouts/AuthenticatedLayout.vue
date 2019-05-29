@@ -30,30 +30,32 @@
 </template>
 
 <script lang="ts">
-   import  Vue from 'vue';
-   import { mapActions, mapGetters } from 'vuex';
-   import modules from '@/presentation/modules';
+import  Vue from 'vue';
+import { mapActions, mapGetters } from 'vuex';
+import modules from '@/presentation/modules';
 
 
-  export default Vue.extend({
-    data: () => ({
-      drawer: null
-    }),
-    computed: {
-        ...mapGetters(['isAuthorized']),        
-    },
-    methods: {
-      ...mapActions(['signOut'])     
-    },    
-    created() {
-      if(!this.isAuthorized)
-        this.$router.push({ name: modules.LoginModule.name });
-    },
-    watch: {
-        isAuthorized: function (val) {
-            if(!val)
-                this.$router.push({ name: modules.LoginModule.name });
-        }
-    }
-  });
+export default Vue.extend({
+  data: () => ({
+    drawer: null
+  }),
+  computed: {
+      ...mapGetters(['isAuthorized'])
+  },
+  methods: {
+    ...mapActions(['signOut'])
+  },
+  created() {
+    if(!this.isAuthorized)
+      this.$router.push({ name: modules.LoginModule.name });
+   
+  },
+  watch: {
+      isAuthorized: function (val) {
+          if(!val)
+              this.$router.push({ name: modules.LoginModule.name });
+          
+      }
+  }
+})
 </script>

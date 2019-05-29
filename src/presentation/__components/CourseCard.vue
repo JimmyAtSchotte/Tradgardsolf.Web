@@ -28,7 +28,7 @@
     </v-card>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 import Course from '@/core/api/entities/Course';
 
