@@ -1,11 +1,11 @@
 import '@babel/polyfill';
 import Vue from 'vue';
 import './plugins/vuetify';
-import App from '@/presentation/layouts/App.vue';
+import '@/application/registerServiceWorker';
 import router from '@/application/router';
 import store from '@/application/store/';
-import '@/application/registerServiceWorker';
-import modules from '@/application/modules';
+import layouts from '@/presentation/layouts';
+import modules from '@/presentation/modules';
 
 Vue.config.productionTip = false;
 
@@ -29,5 +29,5 @@ router.beforeEach((to, from, next) => {
 new Vue({
   router,
   store,
-  render: (h) => h(App),
+  render: (h) => h(layouts.App),
 }).$mount('#app');

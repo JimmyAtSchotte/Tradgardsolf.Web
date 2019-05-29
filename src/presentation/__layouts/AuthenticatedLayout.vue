@@ -32,7 +32,7 @@
 <script lang="ts">
    import  Vue from 'vue';
    import { mapActions, mapGetters } from 'vuex';
-   import modules from '@/application/modules';
+   import modules from '@/presentation/modules';
 
 
   export default Vue.extend({

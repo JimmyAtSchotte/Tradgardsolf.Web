@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import layouts from '@/application/layouts';
-import modules from '@/application/modules';
+import layouts from '@/presentation/layouts';
+import modules from '@/presentation/modules';
 
 Vue.use(Router);
 
@@ -26,4 +26,3 @@ export default new Router({
       },
   ],
 });
-

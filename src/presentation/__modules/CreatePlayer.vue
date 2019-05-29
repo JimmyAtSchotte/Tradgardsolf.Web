@@ -17,7 +17,7 @@
 </template>
 
 <script>
-    import modules from '@/application/modules';
+  import modules from '@/presentation/modules';
   export default {
       name: 'CreatePlayer',
       methods: {

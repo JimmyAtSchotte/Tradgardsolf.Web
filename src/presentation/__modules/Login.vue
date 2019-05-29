@@ -21,8 +21,7 @@
    import  Vue from 'vue';
    import { mapActions, mapGetters } from 'vuex'
    import CredentialsModel from '@/core/api/models/CredentialsModel';
-   import modules from '@/application/modules';
-
+   import modules from '@/presentation/modules';
 
   export default {      
       name: 'Login',  
