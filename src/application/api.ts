@@ -45,7 +45,7 @@ export default class Api implements IApi {
 
     protected onError(error: any): void {
         if (error.response.status === 401) {
-            store.commit('resetState');
+            store.current.commit('resetState');
         }
     }
 }

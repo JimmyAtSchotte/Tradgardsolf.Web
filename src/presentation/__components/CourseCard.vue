@@ -33,6 +33,7 @@ import Vue from "vue";
 import Course from '@/core/api/entities/Course';
 
 export default Vue.extend({
+    name: "CourseCard",
     props: {
         course: Course
     }

@@ -1,5 +1,6 @@
 import '@babel/polyfill';
 import Vue from 'vue';
+import './plugins/vuetify'
 import './plugins/vuetify';
 import '@/application/registerServiceWorker';
 import router from '@/application/router';
@@ -10,7 +11,7 @@ import modules from '@/presentation/modules';
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
-  const isAuthorized = store.getters.isAuthorized as boolean;
+  const isAuthorized = store.current.getters.isAuthorized as boolean;
   const allowAnonymous = !!to.meta.allowAnonymous;
 
   if (!isAuthorized && !allowAnonymous) {
@@ -28,6 +29,6 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
   router,
-  store,
+  store: store.current,
   render: (h) => h(layouts.App),
 }).$mount('#app');

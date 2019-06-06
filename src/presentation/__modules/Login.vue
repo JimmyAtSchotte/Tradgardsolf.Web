@@ -11,8 +11,8 @@
         </v-card-text>
         <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="accent" @click="gotoCreatePlayer">Skapa användare</v-btn>
-        <v-btn color="primary" @click="login">Logga in</v-btn>
+        <v-btn color="accent" @click="onGotoCreatePlayer">Skapa användare</v-btn>
+        <v-btn color="primary" @click="onLogin">Logga in</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -23,7 +23,14 @@
    import CredentialsModel from '@/core/api/models/CredentialsModel';
    import modules from '@/presentation/modules';
 
-  export default {      
+   import Api from '@/application/api';
+   import AuthenticationController from '@/core/api/controllers/AuthenticationController';
+
+
+   const api = new Api();
+   const authenticationController = new AuthenticationController(api);
+
+   export default {      
       name: 'Login',  
     data: () => ({
         credentialsModel: new CredentialsModel()                   
@@ -33,11 +40,12 @@
     },
     methods: {
         ...mapActions(['authenticateWithCredentials']),
-        gotoCreatePlayer: function (event) {
+        onGotoCreatePlayer: function (event) {
             this.$router.push({ name: modules.CreatePlayerModule.name });
         },
-        login: async function(event) {
-            await this.authenticateWithCredentials(this.credentialsModel);
+        onLogin: async function(event) {
+            const authorizePlayer = await authenticationController.AuthenticateWithCredentials(this.credentialsModel);
+            this.authenticateWithCredentials(authorizePlayer);
         },
     },
     watch: {
