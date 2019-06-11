@@ -33,6 +33,10 @@ export default class Api implements IApi {
     public async getAsync<TResult, TModel>(url: string, data?: TModel): Promise<TResult> {
         let result: TResult = null;
 
+        console.log('url', url);
+        console.log('data', data);
+
+
         await this.api.get<TResult>(url, data).then((response) => result = response.data)
             .catch((error) => this.onError(error));
 

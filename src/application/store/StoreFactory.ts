@@ -23,11 +23,8 @@ export default class StoreFactory {
               setAuthorizedPlayer(state, authorizedPlayer: AuthorizedPlayer) {
                 state.authorizedPlayer = authorizedPlayer;
               },
-              setHasPlayedOnCourses(state, courses: Course[]) {
-                state.hasPlayedOnCourses = courses;
-              },
-              setHasNotPlayedOnCourses(state, courses: Course[]) {
-                state.hasNotPlayedOnCourses = courses;
+              setCourses(state, courses: Course[]) {
+                state.courses = courses;
               },
               resetState(state) {
                 Object.assign(state, defaultState);
@@ -44,11 +41,8 @@ export default class StoreFactory {
               setAuthorizedPlayer(context: ActionContext<RootState, RootState>, authorizedPlayer: AuthorizedPlayer | undefined) {
                 context.commit('setAuthorizedPlayer', authorizedPlayer);
               },
-              setHasPlayedOnCourses(context: ActionContext<RootState, RootState>, courses: Course[]) {
-                  context.commit('setHasPlayedOnCourses', courses);
-              },
-              setHasNotPlayedOnCourses(context: ActionContext<RootState, RootState>, courses: Course[]) {
-                  context.commit('setHasNotPlayedOnCourses', courses);
+              setCourses(context: ActionContext<RootState, RootState>, courses: Course[]) {
+                  context.commit('setCourses', courses);
               },
             },
             getters: {
@@ -58,11 +52,8 @@ export default class StoreFactory {
               authorizedPlayer(state): AuthorizedPlayer {
                 return state.authorizedPlayer;
               },
-              hasPlayedOnCourses(state): Course[] {
-                return state.hasPlayedOnCourses;
-              },
-              hasNotPlayedOnCourses(state): Course[] {
-                return state.hasNotPlayedOnCourses;
+              courses(state): Course[] {
+                return state.courses;
               },
             },
           });

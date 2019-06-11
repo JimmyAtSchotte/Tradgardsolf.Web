@@ -3,10 +3,13 @@ import Vue from 'vue';
 import './plugins/vuetify'
 import './plugins/vuetify';
 import '@/application/registerServiceWorker';
+import VueGeolocation from 'vue-browser-geolocation';
 import router from '@/application/router';
 import store from '@/application/store/';
 import layouts from '@/presentation/layouts';
 import modules from '@/presentation/modules';
+
+Vue.use(VueGeolocation);
 
 Vue.config.productionTip = false;
 

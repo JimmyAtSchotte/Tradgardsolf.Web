@@ -25,7 +25,7 @@ describe('CourseList.vue', () => {
 
 
     const state = new RootState();
-    state.hasPlayedOnCourses = [new Course(), new Course()];
+    state.courses = [new Course(), new Course()];
 
     const store = storeFactory.create(state);
     const wrapper = mount(CourseList, { store, localVue } );

@@ -15,4 +15,8 @@ export default class CourseController {
     public async GetHasNotPlayedOnCourses(): Promise<Course[]> {
         return await this.api.getAsync<Course[]>('api/course/GetHasNotPlayedOnCourses');
      }
+
+     public async GetCoursesWithDistance(latitude: number, longitude: number): Promise<Course[]> {
+         return await this.api.getAsync<Course[]>(`api/course/GetCoursesWithDistance?latitude=${latitude}&longitude=${longitude}`);
+     }
 }

@@ -1,28 +1,24 @@
 <template>
     <v-card>
-        <v-img
-        class="white--text"
-        height="200px"
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-        >
-        <v-container fill-height fluid>
-            <v-layout fill-height>
-            <v-flex xs12 align-end flexbox>
-                <span class="headline">{{ course.name }}</span>
-            </v-flex>
-            </v-layout>
-        </v-container>
+        <v-img class="white--text" height="200px" src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+            <v-container fill-height fluid>
+                <v-layout fill-height>
+                <v-flex xs12 align-end flexbox>
+                    <span class="headline">{{ course.name }}</span>
+                </v-flex>
+                </v-layout>
+                <course-menu :course="course"></course-menu>                
+            </v-container>
         </v-img>
         <v-card-title>
         <div>
-            <span class="grey--text">Number 10</span><br>
-            <span>Whitehaven Beach</span><br>
-            <span>Whitsunday Island, Whitsunday Islands</span>
+            <span>Distance: {{ course.distance }} meters</span>
         </div>
         </v-card-title>
         <v-card-actions>
-        <v-btn flat color="orange">Share</v-btn>
-        <v-btn flat color="orange">Explore</v-btn>
+            <v-flex class="text-xs-right">
+                <v-btn flat color="orange" id="play" v-show="showPlayButton">Spela</v-btn>       
+            </v-flex>
         </v-card-actions>
         <v-spacer></v-spacer>
     </v-card>
@@ -31,11 +27,20 @@
 <script lang="ts">
 import Vue from "vue";
 import Course from '@/core/api/entities/Course';
+import CourseMenu from '@/presentation/__components/CourseMenu.vue';
 
 export default Vue.extend({
     name: "CourseCard",
+    components: {
+      CourseMenu
+    },
     props: {
         course: Course
+    },
+    computed: {
+        showPlayButton: function () {            
+            return this.course.distance < 200;
+        },
     }
 });
 </script>

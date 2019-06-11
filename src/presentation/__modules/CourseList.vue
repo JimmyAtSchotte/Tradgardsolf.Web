@@ -1,6 +1,6 @@
 <template>
 <div>
-    <CourseCard v-for="course in hasPlayedOnCourses" v-bind:key="course.id" :course="course"></CourseCard>
+    <CourseCard v-for="course in courses" v-bind:key="course.id" :course="course"></CourseCard>
 
 </div>
     
@@ -23,14 +23,15 @@ export default Vue.extend({
       CourseCard
    },
    computed: {
-       ...mapGetters(['hasPlayedOnCourses', 'hasNotPlayedOnCourses'])
+       ...mapGetters(['courses'])
    },
    methods: {
-      ...mapActions(['setHasPlayedOnCourses', 'setHasNotPlayedOnCourses'])
+      ...mapActions(['setCourses'])
    },
    async created() {
-      this.setHasPlayedOnCourses(await courseController.GetHasPlayedOnCourses());
-      this.setHasNotPlayedOnCourses(await courseController.GetHasPlayedOnCourses());
+      this.$getLocation().then(async position => {       
+            this.setCourses(await courseController.GetCoursesWithDistance(position.lat, position.lng));
+      });    
    }
 });
 </script>
