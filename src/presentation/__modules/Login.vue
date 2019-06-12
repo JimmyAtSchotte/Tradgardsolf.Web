@@ -17,43 +17,46 @@
     </v-card>
 </template>
 
-<script>  
-   import  Vue from 'vue';
-   import { mapActions, mapGetters } from 'vuex'
-   import CredentialsModel from '@/core/api/models/CredentialsModel';
-   import modules from '@/presentation/modules';
+<script lang="ts">  
+import  Vue from 'vue';
+import { Component, Watch } from 'vue-property-decorator';
+import { mapGetters } from 'vuex'
+import CredentialsModel from '@/core/api/models/CredentialsModel';
+import modules from '@/presentation/modules';
 
-   import Api from '@/application/api';
-   import AuthenticationController from '@/core/api/controllers/AuthenticationController';
+import Api from '@/application/api';
+import AuthenticationController from '@/core/api/controllers/AuthenticationController';
 
+@Component({
+  name: "Login",
+  computed: mapGetters(['isAuthorized']),
+})
+export default class Login extends Vue 
+{
+    private readonly authenticationController : AuthenticationController;
 
-   const api = new Api();
-   const authenticationController = new AuthenticationController(api);
+    public credentialsModel : CredentialsModel;
 
-   export default {      
-      name: 'Login',  
-    data: () => ({
-        credentialsModel: new CredentialsModel()                   
-    }),
-    computed: {
-        ...mapGetters(['isAuthorized']),        
-    },
-    methods: {
-        ...mapActions(['authenticateWithCredentials']),
-        onGotoCreatePlayer: function (event) {
-            this.$router.push({ name: modules.CreatePlayerModule.name });
-        },
-        onLogin: async function(event) {
-            const authorizePlayer = await authenticationController.AuthenticateWithCredentials(this.credentialsModel);
-            this.authenticateWithCredentials(authorizePlayer);
-        },
-    },
-    watch: {
-        isAuthorized: function (val) {
-            if(val)
-                this.$router.push({ name: modules.CourseListModule.name });
-        }
+    constructor(){
+        super();
+        this.authenticationController = new AuthenticationController(new Api());
+        this.credentialsModel = new CredentialsModel();
     }
+
+    onGotoCreatePlayer(event) {
+        this.$router.push({ name: modules.CreatePlayerModule.name });
+    }
+
+    async onLogin(event) {
+        const authorizePlayer = await this.authenticationController.AuthenticateWithCredentials(this.credentialsModel);
+        this.$store.dispatch('authenticateWithCredentials', authorizePlayer);   
+    }
+
+    @Watch('isAuthorized')
+    onIsAuthorized(value: boolean, oldValue: boolean) {
+        if(value)
+            this.$router.push({ name: modules.CourseListModule.name });
+    } 
 }
   
 </script>

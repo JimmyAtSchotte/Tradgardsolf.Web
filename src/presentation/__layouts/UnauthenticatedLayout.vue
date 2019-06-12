@@ -13,9 +13,5 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      drawer: null
-    }),
-  }
+  export default { }
 </script>

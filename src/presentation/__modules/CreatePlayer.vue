@@ -16,14 +16,18 @@
     </v-card>
 </template>
 
-<script>
-  import modules from '@/presentation/modules';
-  export default {
-      name: 'CreatePlayer',
-      methods: {
-          gotoLogin: function () {
-              this.$router.push({ name: modules.LoginModule.name });
-          }
-      }
-  }
+<script lang="ts">
+import  Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import modules from '@/presentation/modules';
+
+@Component({
+  name: "CreatePlayer",
+})
+export default class CreatePlayer extends Vue
+{
+    gotoLogin() {
+        this.$router.push({ name: modules.LoginModule.name });
+    }      
+}
 </script>

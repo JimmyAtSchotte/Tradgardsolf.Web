@@ -57,4 +57,34 @@ describe('CourseCard.vue', () => {
 
       expect(wrapper.find('#statistics').isVisible()).toBe(false);
   });
+
+  test('Should display season table if has played on course', () => {
+    const course = new Course();
+    course.hasPlayedOnCourse = true;
+
+    const wrapper = mount(CourseMenu,
+      {
+        localVue,
+        propsData: {
+          course: course
+        }
+      });
+
+    expect(wrapper.find('#seasontable').isVisible()).toBe(true);
+  });
+
+  test('Should not display season table  if has not played on course', () => {
+    const course = new Course();
+    course.hasPlayedOnCourse = false;
+
+    const wrapper = mount(CourseMenu,
+      {
+        localVue,
+        propsData: {
+          course: course
+        }
+      });
+
+      expect(wrapper.find('#seasontable').isVisible()).toBe(false);
+  });
 });

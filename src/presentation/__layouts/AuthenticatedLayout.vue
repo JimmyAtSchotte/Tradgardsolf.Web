@@ -31,6 +31,7 @@
 
 <script lang="ts">
 import  Vue from 'vue';
+import { Component, Watch } from 'vue-property-decorator';
 import { mapActions, mapGetters } from 'vuex';
 import modules from '@/presentation/modules';
 
@@ -40,33 +41,31 @@ import AuthenticationController from '@/core/api/controllers/AuthenticationContr
 const api = new Api();
 const authenticationController = new AuthenticationController(api);
 
-
-export default Vue.extend({
-  data: () => ({
-    drawer: null
-  }),
-  computed: {
-      ...mapGetters(['isAuthorized'])
-  },
-  methods: {
-    ...mapActions(['signOut']),
-     onSignOut: function () {
-        authenticationController.SignOut();
-        this.signOut();
-        this.$router.push({ name: modules.LoginModule.name });
-     }
-  },
-  created() {
-    if(!this.isAuthorized)
-      this.$router.push({ name: modules.LoginModule.name });
-   
-  },
-  watch: {
-      isAuthorized: function (val) {
-          if(!val)
-              this.$router.push({ name: modules.LoginModule.name });
-          
-      }
-  }
+@Component({
+  name: "AuthenticatedLayout",
+  computed: mapGetters(['isAuthorized']),
 })
+export default class AuthenticatedLayout extends Vue
+{
+  public drawer : boolean = false;
+
+  private readonly authenticationController : AuthenticationController;
+
+   constructor(){
+      super();
+      this.authenticationController = new AuthenticationController(new Api());
+   }
+
+  async onSignOut() {
+    await authenticationController.SignOut();
+    this.$store.dispatch('signOut');
+    this.$router.push({ name: modules.LoginModule.name });
+  }
+ 
+  @Watch('isAuthorized')
+  onIsAuthorizedChanged(value: boolean, oldValue: boolean) {
+    if(!value)
+      this.$router.push({ name: modules.LoginModule.name });
+  }
+}
 </script>

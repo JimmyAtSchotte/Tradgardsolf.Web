@@ -19,9 +19,21 @@ export default new Router({
           path: '/',
           component: layouts.AuthenticatedLayout,
           children: [
-               { path: '', name: modules.CourseListModule.name, component: modules.CourseListModule },
-              //  { path: 'dashboard', name: 'dashboard', component: Dashboard },
-              //  { path: 'translate', name: 'translate', component: Translate }
+                {
+                    path: '',
+                    name: modules.CourseListModule.name,
+                    component: modules.CourseListModule,
+                },
+               {
+                    path: 'RoundSetup/:courseId',
+                    name: modules.RoundSetupModule.name,
+                    component: modules.RoundSetupModule
+                },
+                {
+                    path: 'Play/:courseId',
+                    name: modules.PlayModule.name,
+                    component: modules.PlayModule,
+                },
           ],
       },
   ],

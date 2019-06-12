@@ -17,7 +17,7 @@
         </v-card-title>
         <v-card-actions>
             <v-flex class="text-xs-right">
-                <v-btn flat color="orange" id="play" v-show="showPlayButton">Spela</v-btn>       
+                <v-btn flat color="orange" id="play" v-show="showPlayButton" @click="onPlay">Spela</v-btn>       
             </v-flex>
         </v-card-actions>
         <v-spacer></v-spacer>
@@ -26,21 +26,31 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { Component, Prop } from 'vue-property-decorator';
 import Course from '@/core/api/entities/Course';
 import CourseMenu from '@/presentation/__components/CourseMenu.vue';
+import modules from '@/presentation/modules';
 
-export default Vue.extend({
-    name: "CourseCard",
-    components: {
-      CourseMenu
-    },
-    props: {
-        course: Course
-    },
-    computed: {
-        showPlayButton: function () {            
-            return this.course.distance < 200;
-        },
+@Component({
+  name: "CourseCard",
+  components: {
+     CourseMenu
+  }
+})
+export default class CourseCard extends Vue
+{
+    @Prop()
+    public course : Course;
+
+    get showPlayButton() {            
+        return this.course.distance < 2000;
     }
-});
+
+    onPlay(event) {
+        this.$router.push( { 
+            name: modules.RoundSetupModule.name,           
+            params: { courseId: this.course.id.toString() } 
+        });
+    }   
+};
 </script>

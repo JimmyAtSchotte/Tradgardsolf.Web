@@ -1,4 +1,3 @@
-import Vuex from 'vuex'
 import { createLocalVue, mount, shallowMount } from '@vue/test-utils';
 import CourseCard from '@/presentation/__components/CourseCard.vue';
 import Course from '@/core/api/entities/Course';
