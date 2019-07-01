@@ -25,12 +25,12 @@ export default new Router({
                     component: modules.CourseListModule,
                 },
                {
-                    path: 'RoundSetup/:courseId',
+                    path: 'RoundSetup',
                     name: modules.RoundSetupModule.name,
                     component: modules.RoundSetupModule
                 },
                 {
-                    path: 'Play/:courseId',
+                    path: 'Play',
                     name: modules.PlayModule.name,
                     component: modules.PlayModule,
                 },

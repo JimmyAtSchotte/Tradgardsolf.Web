@@ -53,7 +53,7 @@ export default class Login extends Vue
     }
 
     @Watch('isAuthorized')
-    onIsAuthorized(value: boolean, oldValue: boolean) {
+    onIsAuthorizedChanged(value: boolean, oldValue: boolean) {
         if(value)
             this.$router.push({ name: modules.CourseListModule.name });
     } 

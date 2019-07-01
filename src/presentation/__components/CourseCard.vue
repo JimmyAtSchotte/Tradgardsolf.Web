@@ -47,10 +47,8 @@ export default class CourseCard extends Vue
     }
 
     onPlay(event) {
-        this.$router.push( { 
-            name: modules.RoundSetupModule.name,           
-            params: { courseId: this.course.id.toString() } 
-        });
+        this.$store.dispatch('setSelectedCourse', this.course);
+        this.$router.push( { name: modules.RoundSetupModule.name });
     }   
 };
 </script>

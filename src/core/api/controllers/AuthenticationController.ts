@@ -1,5 +1,5 @@
 import IApi from '@/core/interfaces/IApi';
-import AuthorizedPlayer from '@/core/api/entities/AuthorizedPlayer';
+import Player from '@/core/api/entities/Player';
 import CredentialsModel from '@/core/api/models/CredentialsModel';
 
 export default class AuthenticationController {
@@ -9,8 +9,8 @@ export default class AuthenticationController {
         this.api = api;
     }
 
-    public async AuthenticateWithCredentials(model: CredentialsModel): Promise<AuthorizedPlayer> {
-       return await this.api.postAsync<AuthorizedPlayer, CredentialsModel>('api/authentication/AuthenticateWithCredentials', model);
+    public async AuthenticateWithCredentials(model: CredentialsModel): Promise<Player> {
+       return await this.api.postAsync<Player, CredentialsModel>('api/authentication/AuthenticateWithCredentials', model);
     }
 
     public SignOut(): void {
