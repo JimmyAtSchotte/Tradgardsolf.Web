@@ -42,8 +42,9 @@ export default class CourseCard extends Vue
     @Prop()
     public course : Course;
 
-    get showPlayButton() {            
-        return this.course.distance < 2000;
+    get showPlayButton() {    
+        return true;        
+        //return this.course.distance < 2000;
     }
 
     onPlay(event) {

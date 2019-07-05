@@ -5,6 +5,8 @@ import createPersistedState from 'vuex-persistedstate';
 import Course from '@/core/api/entities/Course';
 import RootState from '@/application/store/RootState';
 import Player from '@/core/api/entities/Player';
+import Round from '@/core/api/models/Round';
+import UpdatePlayerScore from './UpdatePlayerScore';
 
 Vue.use(Vuex);
 
@@ -18,6 +20,7 @@ export default class StoreFactory {
                 'authorizedPlayer',
                 'selectedCourse',
                 'selectedPlayers',
+                'currentRound',
               ],
             })],
             state: defaultState,
@@ -34,10 +37,20 @@ export default class StoreFactory {
               setSelectedPlayers(state, players: Player[]) {
                 state.selectedPlayers = players;
               },
+              setCurrentRound(state, round: Round) {
+                state.currentRound = round;
+              },
+              updatePlayerScore(state, updatePlayerScore: UpdatePlayerScore) {
+                console.log(updatePlayerScore);
+                state.currentRound
+                     .players[updatePlayerScore.playerIndex]
+                     .scores[updatePlayerScore.holeIndex] = updatePlayerScore.score;
+              },
               resetState(state) {
                 Object.assign(state, defaultState);
                 state.authorizedPlayer = null;
                 state.selectedCourse = null;
+                state.currentRound = null;
                 state.selectedPlayers = [] as Player[];
               },
             },
@@ -58,7 +71,13 @@ export default class StoreFactory {
                 context.commit('setSelectedCourse', course);
               },
               setSelectedPlayers(context: ActionContext<RootState, RootState>, players: Player[]) {
-                context.commit('setSelectedPlayer', players);
+                context.commit('setSelectedPlayers', players);
+              },
+              setCurrentRound(context: ActionContext<RootState, RootState>, round: Round) {
+                context.commit('setCurrentRound', round);
+              },
+              updatePlayerScore(context: ActionContext<RootState, RootState>, updatePlayerScore: UpdatePlayerScore) {
+                context.commit('updatePlayerScore', updatePlayerScore);
               },
             },
             getters: {
@@ -73,9 +92,12 @@ export default class StoreFactory {
               },
               selectedCourse(state): Course {
                 return state.selectedCourse;
-              },              
+              },
               selectedPlayers(state): Player[] {
                 return state.selectedPlayers;
+              },
+              currentRound(state): Round {
+                return state.currentRound;
               },
             },
           });

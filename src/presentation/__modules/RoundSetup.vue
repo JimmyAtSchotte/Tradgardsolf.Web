@@ -4,39 +4,12 @@
 
          <v-list subheader>
           <v-subheader>Valda spelare</v-subheader>
-          <v-list-tile v-for="player in selectedPlayers" :key="player.id" avatar @click="onRemove(player)">
-            <v-list-tile-avatar>
-              <v-icon>account_circle</v-icon>
-            </v-list-tile-avatar>
-
-            <v-list-tile-content>
-              <v-list-tile-title v-text="player.name"></v-list-tile-title>
-              <v-list-tile-sub-title>{{ player.email }}</v-list-tile-sub-title>
-            </v-list-tile-content>
-
-            <v-list-tile-action>
-              <v-icon>remove_circle</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
+          <PlayerListTile v-for="player in selectedPlayers" :key="player.id" :player="player" :icon="'remove_circle'" @click.native="onRemove(player)"></PlayerListTile>
         </v-list>
          
          <v-list subheader>
-          <v-subheader>Välj spelare</v-subheader>         
-
-          <v-list-tile v-for="player in unselectedPlayers" :key="player.id" avatar @click="onAdd(player)">
-            <v-list-tile-avatar>
-              <v-icon>account_circle</v-icon>
-            </v-list-tile-avatar>
-
-            <v-list-tile-content>
-              <v-list-tile-title v-text="player.name"></v-list-tile-title>
-              <v-list-tile-sub-title>{{ player.email }}</v-list-tile-sub-title>
-            </v-list-tile-content>
-
-            <v-list-tile-action>
-              <v-icon>add_circle</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
+          <v-subheader>Välj spelare</v-subheader>      
+          <PlayerListTile v-for="player in unselectedPlayers" :key="player.id" :player="player" :icon="'add_circle'" @click.native="onAdd(player)"></PlayerListTile> 
 
           <v-list-tile avatar @click="onShowNewPlayer()">
             <v-list-tile-avatar>
@@ -65,9 +38,15 @@
               <v-btn color="accent" @click="onAddNewPlayer">Lägg till</v-btn>
               </v-card-actions>
           </v-card>
-        </v-dialog>
+        </v-dialog>   
 
-        
+        <v-footer  height="auto" color="primary lighten-1">
+          <v-layout justify-center row wrap fixed="true">
+              <v-btn color="white" flat round @click="onStartPlay()">
+                Börja spela
+              </v-btn>                
+            </v-layout>
+        </v-footer>     
     </div>   
 </template>
 
@@ -77,18 +56,19 @@ import { Component, Prop } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { List } from 'linqts';
 import CourseCard from '@/presentation/__components/CourseCard.vue';
+import PlayerListTile from '@/presentation/__components/PlayerListTile.vue';
 import Player from '@/core/api/entities/Player';
 import Course from '@/core/api/entities/Course';
+import Round from '@/core/api/models/Round';
 import modules from '@/presentation/modules';
 import PlayerController from '@/core/api/controllers/PlayerController';
 import Api from '@/application/api';
 
-
-
 @Component({
   name: "RoundSetup",
   components: {
-     CourseCard
+     CourseCard,
+     PlayerListTile
   },
 })
 export default class RoundSetup extends Vue
@@ -104,7 +84,6 @@ export default class RoundSetup extends Vue
 
     constructor() {
         super();
-        console.log('RoundSetup.constructor()');
 
         this.playerController = new PlayerController(new Api());
         this.selectedPlayerList = new List<Player>();
@@ -122,12 +101,9 @@ export default class RoundSetup extends Vue
         return this.unselectedPlayerList.ToArray();
     }
 
-
-
     onAdd(player: Player) {        
         this.selectedPlayerList.Add(player);  
         this.unselectedPlayerList.Remove(player);  
-
     }
 
     onRemove(player: Player) {        
@@ -146,8 +122,14 @@ export default class RoundSetup extends Vue
       this.showNewPlayer = false;
     }
 
+    onStartPlay(){
+      const round = new Round(this.selectedCourse , this.selectedPlayerList.ToArray());
+      this.$store.dispatch('setCurrentRound', round);
+      this.$store.dispatch('setSelectedPlayers', this.selectedPlayerList.ToArray());
+      this.$router.push({ name: modules.PlayModule.name });
+    }
+
     async created(){
-        console.log('RoundSetup.created()');
         this.selectedCourse = this.$store.getters.selectedCourse;
 
         if(this.selectedCourse == null){
