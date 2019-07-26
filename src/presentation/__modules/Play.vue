@@ -22,6 +22,14 @@
     </li>
   </ul>
 
+  <v-footer height="auto" color="primary lighten-1" v-show="showSaveRound()" :fixed="true">
+      <v-layout justify-center row wrap>
+        <v-btn color="white" flat round block @click="onSaveRound()">
+          Spara runda
+        </v-btn>  
+      </v-layout>
+    </v-footer>     
+
   <v-dialog v-model="showScoreDialog">
     <v-card class="elevation-12">
         <v-toolbar dark color="primary">
@@ -48,6 +56,7 @@ ul.scoretable {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 ul.scoretable  li     ul {
         list-style-type: none;
@@ -96,6 +105,7 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import Course from '@/core/api/entities/Course';
+import Player from '@/core/api/entities/Player';
 import Round from '@/core/api/models/Round';
 import RoundScore from '@/core/api/models/RoundScore';
 import modules from '@/presentation/modules';
@@ -111,6 +121,7 @@ export default class Play extends Vue
     public selectedCourse : Course;
     public showScoreDialog : boolean;
 
+    
     private currentRoundScore : RoundScore;
     private currentHole : number = 0;
     private currentHoleIndex : number = 0;
@@ -127,6 +138,22 @@ export default class Play extends Vue
     {
         return player.scores.reduce((a, b) => a + b, 0);
     }
+    showSaveRound() : Boolean
+    {
+       const players: RoundScore[] = this.$store.getters.currentRound.players;
+       for(let player of players) {
+          for(let score of player.scores){
+
+            console.log(score);
+            if ( score === undefined)
+              return false;
+          }
+       }
+
+      return true;
+    }
+
+    
 
     onShowScoreDialog(player: RoundScore, hole: number, playerIndex: number, holeIndex: number){
       this.currentRoundScore = player;

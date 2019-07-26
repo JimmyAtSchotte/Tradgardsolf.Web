@@ -40,9 +40,9 @@
           </v-card>
         </v-dialog>   
 
-        <v-footer  height="auto" color="primary lighten-1">
-          <v-layout justify-center row wrap fixed="true">
-              <v-btn color="white" flat round @click="onStartPlay()">
+        <v-footer  height="auto" color="primary lighten-1" :fixed="true">
+          <v-layout justify-center row wrap>
+              <v-btn color="white" flat round block @click="onStartPlay()">
                 Börja spela
               </v-btn>                
             </v-layout>
